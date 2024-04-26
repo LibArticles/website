@@ -1,0 +1,47 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-gradient-to-br from-caramel-75 font-sans">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Articleman" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,1;1,9..144,100..900,0..100,1&family=Lexend:wght@100..900&display=swap"
+			rel="stylesheet"
+		/>
+		<script
+			defer
+			data-domain="articleman.org"
+			src="https://analytics.bluelinden.art/js/script.js"></script>
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+	<style>
+		.font-soft-100 {
+			font-variation-settings: "SOFT" 100;
+		}
+		.font-soft-75 {
+			font-variation-settings: "SOFT" 75;
+		}
+		.font-soft-50 {
+			font-variation-settings: "SOFT" 50;
+		}
+		.font-soft-25 {
+			font-variation-settings: "SOFT" 25;
+		}
+		.font-soft-0 {
+			font-variation-settings: "SOFT" 0;
+		}
+	</style>
+</html>

@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Articleman">
+	<main class="w-full min-h-screen flex">
+		<header
+			class="w-full min-h-screen bg-caramel-700 flex flex-col items-center align-middle justify-center p-4"
+		>
+			<h1
+				class="mt-auto text-7xl font-bold text-caramel-75 text-center align-middle font-serif font-soft-100"
+			>
+				Now&apos;s publishing.
+			</h1>
+			<h2 class="text-caramel-200 text-xl font-black font-sans mt-7 mb-auto">
+				From idea to <span class="bg-caramel-200 text-caramel-700 p-2 rounded-lg">Published</span>, work less and get more done.
+			</h2>
+			<p class="font-black text-xl text-caramel-400 px-2">Articleman is a <a class="underline underline-offset-4 decoration-4 text-caramel-75" href="https://bluelinden.art">blue linden</a> project.</p>
+		</header>
+	</main>
+	<style is:global>
+		.font-soft-100 {
+			font-variation-settings: "SOFT" 100;
+		}
+		.font-soft-75 {
+			font-variation-settings: "SOFT" 75;
+		}
+		.font-soft-50 {
+			font-variation-settings: "SOFT" 50;
+		}
+		.font-soft-25 {
+			font-variation-settings: "SOFT" 25;
+		}
+		.font-soft-0 {
+			font-variation-settings: "SOFT" 0;
+		}
+	</style>
+</Layout>
