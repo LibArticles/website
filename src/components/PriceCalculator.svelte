@@ -82,6 +82,20 @@
 
 	$: yearly = true;
 
+	$: maxStaffAllowed = calculateMaxStaff();
+
+	function calculateMaxStaff() {
+		if (!currentPlan) {
+			currentPlan = 0;
+		}
+		return Math.max(
+			...pricing.models[currentPlan]!.userCountBrackets.map((bracket) => {
+				console.log(bracket.end);
+				return bracket.end ?? 31415;
+			})
+		);
+	}
+
 	function calculatePrice() {
 		if (!currentPlan) {
 			currentPlan = 0;
@@ -147,6 +161,10 @@
 					: 'bg-caramel-200'}"
 				on:click={() => {
 					currentPlan = index;
+					maxStaffAllowed = calculateMaxStaff();
+					if (numStaff > maxStaffAllowed) {
+						numStaff = maxStaffAllowed;
+					}
 					totalPrice = calculatePrice();
 				}}
 			>
@@ -157,7 +175,13 @@
 	</section>
 	<section class="w-full flex-col p-2">
 		<h1 class="text-4xl font-serif font-bold font-soft-100">Staff members</h1>
-		<input bind:value={numStaff} on:input={() => (totalPrice = calculatePrice())} type="number" />
+		<input
+			bind:value={numStaff}
+			on:input={() => (totalPrice = calculatePrice())}
+			type="number"
+			min="0"
+			max={maxStaffAllowed}
+		/>
 	</section>
 	<section class="w-full flex-col p-2">
 		<h1 class="text-4xl font-serif font-bold font-soft-100">Addons</h1>
