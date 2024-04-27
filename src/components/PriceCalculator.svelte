@@ -157,7 +157,7 @@
 	</section>
 	<section class="w-full flex-col p-2">
 		<h1 class="text-4xl font-serif font-bold font-soft-100">Staff members</h1>
-		<input bind:value={numStaff} on:input={() => (totalPrice = calculatePrice())} />
+		<input bind:value={numStaff} on:input={() => (totalPrice = calculatePrice())} type="number" />
 	</section>
 	<section class="w-full flex-col p-2">
 		<h1 class="text-4xl font-serif font-bold font-soft-100">Addons</h1>
