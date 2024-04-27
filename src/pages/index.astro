@@ -46,24 +46,13 @@ import PriceCalculator from '../components/PriceCalculator.svelte';
 					creative, be accurate and run a publication.
 				</p>
 				<p>You shouldn't have to juggle five different tools to get a single hour's work done.</p>
-				<p>
-					If you scroll down a little, you can see our great pricing.
-				</p>
+				<p>If you scroll down a little, you can see our great pricing.</p>
 			</section>
 		</article>
 		<article
-			class="flex min-h-screen w-full snap-start snap-always flex-col items-center justify-center bg-caramel-100 p-4 align-middle text-caramel-700"
+			class="flex min-h-screen w-full snap-start snap-always flex-col bg-caramel-50 align-middle text-caramel-700"
 		>
-			<h1
-				class="font-soft-100 sticky bottom-0 top-4 h-[min-content] w-full font-serif text-4xl font-bold"
-			>
-				Pricing calculator (very early beta)
-			</h1>
-			<section
-				class="align-left items-left my-auto flex h-full flex-col gap-4 font-sans text-lg font-bold"
-			>
-				<PriceCalculator client:visible />
-			</section>
+			<PriceCalculator client:visible />
 		</article>
 	</main>
 </Layout>

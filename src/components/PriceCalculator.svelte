@@ -11,6 +11,7 @@
 			name: string;
 			iconName: string;
 			description: string;
+			staffCountFlavorText?: string;
 			comingSoon?: boolean;
 		}>;
 	}
@@ -22,6 +23,7 @@
 				iconName: 'school',
 				description:
 					"Use Articleman to manage student newspapers, literary magazines, video teams, and yearbooks. We'll verify that you're with an educational institution.",
+				staffCountFlavorText: '10 staff members included at no cost',
 				yearlyBasePrice100x: 50_00,
 				monthlyBasePrice100x: 5_00,
 				userCountBrackets: [
@@ -40,6 +42,7 @@
 				name: 'Articleman for Independent Media',
 				iconName: 'diversity_1',
 				description: 'Use Articleman to manage productions for companies of almost any size.',
+				staffCountFlavorText: '3 staff members included at no cost',
 				yearlyBasePrice100x: 150_00,
 				monthlyBasePrice100x: 15_00,
 				userCountBrackets: [
@@ -50,25 +53,25 @@
 					},
 					{
 						end: 150,
-						yearlyPricePerUser100x: 10_00,
-						monthlyPricePerUser100x: 1_00
-					}
-				]
-			},
-			{
-				name: 'Large Scale Articleman',
-				iconName: 'trending_up',
-				description:
-					'Use Articleman in large-scale media businesses, with powerful centralized management, organization and integrations.',
-				yearlyBasePrice100x: 1000_00,
-				monthlyBasePrice100x: 100_00,
-				userCountBrackets: [
-					{
-						yearlyPricePerUser100x: 10_00,
-						monthlyPricePerUser100x: 1_00
+						yearlyPricePerUser100x: 15_00,
+						monthlyPricePerUser100x: 1_50
 					}
 				]
 			}
+			// {
+			// 	name: 'Large Scale Articleman',
+			// 	iconName: 'trending_up',
+			// 	description:
+			// 		'Use Articleman in large-scale media businesses, with powerful centralized management, organization and integrations.',
+			// 	yearlyBasePrice100x: 2000_00,
+			// 	monthlyBasePrice100x: 200_00,
+			// 	userCountBrackets: [
+			// 		{
+			// 			yearlyPricePerUser100x: 10_00,
+			// 			monthlyPricePerUser100x: 1_00
+			// 		}
+			// 	]
+			// }
 		]
 	};
 
@@ -80,7 +83,7 @@
 
 	$: currentPlan = 0;
 
-	$: yearly = true;
+	$: yearly = false;
 
 	$: maxStaffAllowed = calculateMaxStaff();
 
@@ -104,7 +107,7 @@
 			numStaff = 0;
 		}
 		if (yearly === undefined) {
-			yearly = true;
+			yearly = false;
 		}
 		const plan = pricing.models[currentPlan]!;
 		let basePrice = yearly ? plan?.yearlyBasePrice100x : plan?.monthlyBasePrice100x;
@@ -140,50 +143,95 @@
 	}
 </script>
 
-<span class="text-9xl font-serif font-bold font-soft-100 w-full text-center"
-	><span class="text-caramel-500 text-5xl">$</span>{priceFormatted}<button
-		class="text-caramel-500 text-5xl"
-		on:click={() => {
-			yearly = !yearly;
-			totalPrice = calculatePrice();
-		}}>{yearly ? '/yr' : '/mo'}</button
-	>
-</span>
+<div class="min-h-screen w-full flex flex-row">
+	<div class="min-h-screen w-96 bg-caramel-950 text-caramel-50 p-4">
+		<div class="flex flex-col gap-4">
+			<h1 class="text-4xl font-serif font-bold font-soft-100">Pricing</h1>
+			<section class="flex flex-col gap-4" role="listbox">
+				<h2 class="text-3xl font-serif font-bold font-soft-100">Plan</h2>
+				{#each pricing.models as pricePoint, index}
+					<button
+						role="option"
+						aria-selected={currentPlan === index}
+						class="text-left p-4 rounded-xl w-full transition-colors duration-75 font-bold flex flex-row gap-4 {index ===
+						currentPlan
+							? 'bg-caramel-100 text-caramel-900'
+							: 'bg-caramel-900'}"
+						on:click={() => {
+							currentPlan = index;
+							maxStaffAllowed = calculateMaxStaff();
+							if (numStaff > maxStaffAllowed) {
+								numStaff = maxStaffAllowed;
+							}
+							totalPrice = calculatePrice();
+						}}
+					>
+						<span class="material-symbols-rounded">{pricePoint.iconName}</span>
+						<p class="text-base">{pricePoint.name}</p>
+					</button>
+				{/each}
+				<p aria-live="polite" class="min-h-24 text-sm px-4 font-bold text-caramel-350">
+					{pricing.models[currentPlan]?.description}
+				</p>
+			</section>
+			<section class="flex flex-col gap-4" role="listbox">
+				<h2 class="text-3xl font-serif font-bold font-soft-100">Billing</h2>
+				<button
+					role="option"
+					aria-selected={yearly}
+					class="text-left p-4 rounded-xl w-full transition-colors duration-75 font-bold flex flex-row gap-4 {!yearly
+						? 'bg-caramel-100 text-caramel-900'
+						: 'bg-caramel-900'}"
+					on:click={() => {
+						yearly = false;
+						totalPrice = calculatePrice();
+					}}
+				>
+					<span class="material-symbols-rounded">calendar_month</span>
+					<p class="text-base">Monthly</p>
+				</button>
+				<button
+					role="option"
+					aria-selected={yearly}
+					class="text-left p-4 rounded-xl w-full transition-colors duration-75 font-bold flex flex-row gap-4 {yearly
+						? 'bg-caramel-100 text-caramel-900'
+						: 'bg-caramel-900'}"
+					on:click={() => {
+						yearly = true;
+						totalPrice = calculatePrice();
+					}}
+				>
+					<span class="material-symbols-rounded">autorenew</span>
+					<p class="text-base">Yearly</p>
+				</button>
+			</section>
+			<section class="w-full flex flex-col gap-4">
+				<h2 class="text-3xl font-serif font-bold font-soft-100">Staff members</h2>
+				<input
+					bind:value={numStaff}
+					on:input={() => (totalPrice = calculatePrice())}
+					type="number"
+					min="0"
+					max={maxStaffAllowed}
+					class="bg-caramel-900 p-4 font-bold text-7xl rounded-xl w-full"
+				/>
+				{#if pricing.models[currentPlan]?.staffCountFlavorText}
+					<span aria-live="polite" class="text-caramel-350 text-sm font-bold px-4"
+						>{pricing.models[currentPlan]?.staffCountFlavorText}</span
+					>
+				{/if}
+			</section>
+			<!-- <section class="w-full flex-col">
+				<h2 class="text-3xl font-serif font-bold font-soft-100">Addons</h2>
+			</section> -->
+		</div>
+	</div>
 
-<div class="flex flex-col desktop:flex-row">
-	<section class="desktop:w-[46rem] flex-col p-2">
-		<h1 class="text-4xl font-serif font-bold font-soft-100 mb-4">Plan</h1>
-		{#each pricing.models as pricePoint, index}
-			<button
-				class="text-left p-2 rounded-xl mb-2 w-full transition-colors duration-75 {index ===
-				currentPlan
-					? 'bg-caramel-700 text-caramel-100'
-					: 'bg-caramel-200'}"
-				on:click={() => {
-					currentPlan = index;
-					maxStaffAllowed = calculateMaxStaff();
-					if (numStaff > maxStaffAllowed) {
-						numStaff = maxStaffAllowed;
-					}
-					totalPrice = calculatePrice();
-				}}
+	<div class="h-full p-4">
+		<span aria-live="polite" class="text-9xl font-serif font-bold font-soft-100 w-full text-center"
+			><span class="text-caramel-500 text-5xl">$</span>{priceFormatted}<span
+				class="text-caramel-500 text-5xl">{yearly ? '/yr' : '/mo'}</span
 			>
-				<p class="text-lg">{pricePoint.name}</p>
-			</button>
-		{/each}
-		<p class="min-h-36 text-sm px-2">{pricing.models[currentPlan]?.description}</p>
-	</section>
-	<section class="w-full flex-col p-2">
-		<h1 class="text-4xl font-serif font-bold font-soft-100">Staff members</h1>
-		<input
-			bind:value={numStaff}
-			on:input={() => (totalPrice = calculatePrice())}
-			type="number"
-			min="0"
-			max={maxStaffAllowed}
-		/>
-	</section>
-	<section class="w-full flex-col p-2">
-		<h1 class="text-4xl font-serif font-bold font-soft-100">Addons</h1>
-	</section>
+		</span>
+	</div>
 </div>
