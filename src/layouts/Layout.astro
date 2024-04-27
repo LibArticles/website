@@ -18,30 +18,32 @@ const { title } = Astro.props;
 			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,1;1,9..144,100..900,0..100,1&family=Lexend:wght@100..900&display=swap"
 			rel="stylesheet"
 		/>
-		<script
-			defer
-			data-domain="articleman.org"
-			src="https://analytics.bluelinden.art/js/script.js"></script>
+		<script defer data-domain="articleman.org" src="https://analytics.bluelinden.art/js/script.js"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,700,0,0"
+		/>
 		<title>{title}</title>
 	</head>
 	<body>
 		<slot />
 	</body>
-	<style>
+	<style is:global>
 		.font-soft-100 {
-			font-variation-settings: "SOFT" 100;
+			font-variation-settings: 'SOFT' 100;
 		}
 		.font-soft-75 {
-			font-variation-settings: "SOFT" 75;
+			font-variation-settings: 'SOFT' 75;
 		}
 		.font-soft-50 {
-			font-variation-settings: "SOFT" 50;
+			font-variation-settings: 'SOFT' 50;
 		}
 		.font-soft-25 {
-			font-variation-settings: "SOFT" 25;
+			font-variation-settings: 'SOFT' 25;
 		}
 		.font-soft-0 {
-			font-variation-settings: "SOFT" 0;
+			font-variation-settings: 'SOFT' 0;
 		}
 	</style>
 </html>
